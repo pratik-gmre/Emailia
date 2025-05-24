@@ -1,39 +1,34 @@
 import { client } from "@/lib/db";
+import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-export const POST = async (req: Request) => {
+export const onAuthenticated = async () => {
   try {
-    const body = await req.json();
-    const data = body.data;
-
-    const email = data?.email_addresses?.[0]?.email_address;
-    if (!email) {
-      return NextResponse.json(
-        { message: "Email is required" },
-        { status: 400 }
-      );
-    }
+    const user = await currentUser();
+    if (!user)
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    const email = user.emailAddresses[0].emailAddress.toLowerCase();
 
     const emailExist = await client.user.findUnique({
       where: {
         emailAddress: email,
       },
     });
-    console.log("this is emailExist ",emailExist);
-    
+
+
     if (emailExist) {
       return NextResponse.json(
-        { message: "Email already exist" ,emailExist},
-        { status: 400 }
+        { message: "Email already exist", emailExist },
+        { status: 200 }
       );
     }
 
     const newUser = await client.user.create({
       data: {
         emailAddress: email,
-        firstName: data.first_name || "",
-        lastName: data.last_name || "",
-        imageUrl: data.image_url || data.profile_image_url || "",
+        firstName: user.firstName,
+        lastName: user.lastName,
+        imageUrl: user.imageUrl,
       },
     });
 
