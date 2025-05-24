@@ -1,3 +1,5 @@
+'use client'
+
 import { client } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
