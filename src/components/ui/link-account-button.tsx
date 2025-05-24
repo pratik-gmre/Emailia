@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "./button";
-import {getAurinkoAuthUrl} from "../../lib/aurinko.ts"
+import {getAurinkoAuthUrl} from "../../lib/aurinko"
 import { useRouter } from "next/navigation";
 
 const LinkAccountButton = () => {
