@@ -16,6 +16,8 @@ const params = new URLSearchParams({
     returnUrl:`${process.env.NEXT_PUBLIC_URL}/api/aurinko/callback`,
 
 })
+console.log("this is params",params);
+
 
 return `https://api.aurinko.io/v1/auth/authorize?${params.toString()}`
 

@@ -1,4 +1,4 @@
-import LinkAccountButton from "@/components/ui/link-account-button";
+import LinkAccountButton from "../components/ui//link-account-button";
 
 
 export default function Home() {

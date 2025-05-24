@@ -3,22 +3,44 @@ import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
   try {
-    const { data } = await req.json();
+    const body = await req.json();
+    const data = body.data;
 
-    const email = data.email_addresses[0].email_address;
+    const email = data?.email_addresses?.[0]?.email_address;
+    if (!email) {
+      return NextResponse.json(
+        { message: "Email is required" },
+        { status: 400 }
+      );
+    }
+
+    const emailExist = await client.user.findUnique({
+      where: {
+        emailAddress: email,
+      },
+    });
+    if (emailExist) {
+      return NextResponse.json(
+        { message: "Email already exist" },
+        { status: 400 }
+      );
+    }
+
     const newUser = await client.user.create({
       data: {
         emailAddress: email,
-        firstName: data?.first_name,
-        lastName: data?.last_name,
-        imageUrl: data?.image_url,
+        firstName: data.first_name || "",
+        lastName: data.last_name || "",
+        imageUrl: data.image_url || data.profile_image_url || "",
       },
     });
 
-    console.log("clerk webhook receiverd");
-
-    return NextResponse.json({message:newUser},{ status: 200 });
+    return NextResponse.json(newUser, { status: 200 });
   } catch (error) {
-    return NextResponse.json({status:500,message:error})
+    console.error("Webhook error:", error);
+    return NextResponse.json(
+      { message: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 };
