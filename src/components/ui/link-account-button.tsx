@@ -11,8 +11,8 @@ const LinkAccountButton = () => {
     <Button
       onClick={async () => {
         const authUrl = await getAurinkoAuthUrl("Google");
-        // router.push(authUrl);
-        console.log(authUrl);
+        router.push(authUrl);
+
         
       }}
     >

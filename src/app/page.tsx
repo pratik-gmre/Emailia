@@ -1,10 +1,15 @@
+import { UserProfile } from "@clerk/nextjs";
 import LinkAccountButton from "../components/ui//link-account-button";
 
 
 export default function Home() {
-
+          
   
   return (
-    <LinkAccountButton/>
+    <div>
+
+      <LinkAccountButton/>
+     
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 import { client } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
@@ -13,20 +13,17 @@ export const onAuthenticated = async () => {
 
     const emailExist = await client.user.findUnique({
       where: {
-        emailAddress: email,
+         clerkid: user.id,
       },
     });
 
-
     if (emailExist) {
-      return NextResponse.json(
-        { message: "Email already exist", emailExist },
-        { status: 200 }
-      );
+      return { status: 200, user: emailExist };
     }
 
     const newUser = await client.user.create({
       data: {
+        clerkid: user.id,
         emailAddress: email,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -34,7 +31,7 @@ export const onAuthenticated = async () => {
       },
     });
 
-    return NextResponse.json(newUser, { status: 200 });
+    return { status: 200, user: newUser };
   } catch (error) {
     console.error("Webhook error:", error);
     return NextResponse.json(
