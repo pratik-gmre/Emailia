@@ -19,9 +19,11 @@ export const POST = async (req: Request) => {
         emailAddress: email,
       },
     });
+    console.log("this is emailExist ",emailExist);
+    
     if (emailExist) {
       return NextResponse.json(
-        { message: "Email already exist" },
+        { message: "Email already exist" ,emailExist},
         { status: 400 }
       );
     }
