@@ -1,4 +1,4 @@
-'use client'
+'use server'
 
 import { client } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";

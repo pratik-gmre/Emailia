@@ -1,11 +1,14 @@
+
+
 import React from "react";
 import {onAuthenticated} from "../../action/user"
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+
 type Props = {};
 
 const page = async (props: Props) => {
-  const router = useRouter();
+
   const user = await onAuthenticated()
-  if(user.status === 200) return router.push('/')
+  if(user.status === 200) return redirect('/'); else return redirect('/sign-in')
 };
 export default page;
